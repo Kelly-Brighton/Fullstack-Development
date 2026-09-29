@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <div id="app">
+        <h1>{{ heading }}</h1>
+        <figure>
+            <img v-bind:src="product.image" alt="Pet Image" width="300">
+        </figure>
+        <h2 v-text="product.title"></h2>
+        <p v-text="product.description"></p>
+        <p>Price: £{{ product.price }}</p>
+        <p>Available Inventory: {{ product.availableInventory }}</p>
+        <button v-on:click="addToCart()" :disabled="!canAddItem">Add to Cart</button>
+        <p>Available in cart: {{ cartItems.length }}</p>
+    </div>
+
+    <script type="module">
+        // Get the createApp function from Vue.
+        const { createApp } = Vue
+
+        // Create the Vue application.
+        const petStore = createApp({
+
+            // Define the application's data.   
+            data() {
+
+                // Return the data that Vue should make reactive.
+                return {
+
+                    // Store the page heading.
+                    heading: 'Welcome to the Pet Shop!',
+
+                    // Store the product information.
+                    product: {
+
+                        // Store the product title.
+                        title: 'Cute Cat',
+
+                        // Store the product description.
+                        description: 'A friendly and playful cat looking for a loving home.',
+
+                        // Store the product price.
+                        price: 199.99,
+
+                        // Store the product image path.
+                        image: "images/cat.jpg",
+
+                        // Store the number of products available.
+                        availableInventory: 5
+                    },
+
+                    // Store the products added to the cart.
+                    cartItems: []
+                }
+            },
+
+            // Define computed properties.
+            computed: {
+
+                // Check whether another item can be added to the cart.
+                canAddItem() {
+
+                    // Return true if the cart contains fewer items than the available inventory.
+                    return this.cartItems.length < this.product.availableInventory;
+                }
+            },
+
+            // Define methods that can be called by the application.
+            methods: {
+
+                // Add the product to the cart.
+                addToCart() {
+
+                    // Check whether there is still inventory available.
+                    if (this.canAddItem) {
+
+                        // Add the current product to the cart.
+                        this.cartItems.push(this.product);
+                    }
+                }
+            }
+        })
+
+        // Mount the Vue application to the element with id="app".
+        petStore.mount('#app')
+    </script>
+</body>
+
+</html>
