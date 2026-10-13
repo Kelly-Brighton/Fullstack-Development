@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <script src="js/products.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+</head>
+
+<body>
+    <div id="zodiac">
+        <h1> Zodiac Signs: </h1>
+        <p><b>Sign:</b> <input type="text" v-model="zodiacSign"></p>
+        <button @click="fetchData">Get Horoscope</button>
+        <p><b>Date:</b> {{zodiac.date}}</p>
+        <p><b>Horoscope:</b> {{zodiac.horoscope}}</p>
+    </div>
+
+    <script type="module">
+        const { createApp } = Vue
+        const zodiac = createApp({
+            data() {
+                return {
+                    zodiac: {
+                        date: "",
+                        horoscope: ""
+                    },
+                    zodiacSign: ""
+                }
+            },
+            created() {
+                this.fetchData();
+            },
+            methods: {
+                async fetchData() {
+                    const options = {
+                        method: "GET",
+                        headers: {
+                            "X-Api-Key": "6m2RHJ9SruX6EV7Y67y5w3QvedhSqbs1qlzVywXF",
+                        }
+                    };
+                    const url = "https://api.api-ninjas.com/v1/horoscope?zodiac=" + this.zodiacSign;
+                    let response = await (fetch(url, options));
+                    this.zodiac = await response.json();
+
+                }
+            }
+
+        })
+        zodiac.mount("#zodiac");
+    </script>
+</body>
